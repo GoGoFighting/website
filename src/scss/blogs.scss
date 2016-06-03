@@ -1,0 +1,161 @@
+@import './comm/comm';
+@import '//at.alicdn.com/t/font_1464853303_623735.css';
+body {
+    background: #FFFAFA;
+}
+
+.wrap {
+    width: 1000px;
+    margin: 0 auto;
+    overflow: hidden;
+    position: relative;
+    h1 {
+        width: 980px;
+        border-bottom: 1px solid #000;
+        margin: 10px;
+        line-height: 50px;
+        a {
+            color: #000;
+            float: right;
+            font-size: 26px;
+        }
+    }
+    .wrap_left {
+        float: left;
+        width: 240px;
+        padding-left: 10px;
+        margin-left: 10px;
+        .about_me,
+        .follow_me {
+            width: 220px;
+            background: #F1F1F1;
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 10px;
+            .tips {
+                width: 200px;
+                margin: 0 auto;
+                overflow: hidden;
+                padding-top: 10px;
+                a {
+                    float: left;
+                    font-size: 12px;
+                    line-height: 18px;
+                    margin-right: 6px;
+                }
+                a:hover {
+                    color: #EE0000;
+                }
+            }
+            p {
+                width: 200px;
+                border-bottom: 1px solid #000;
+                font-size: 14px;
+                margin: 0 auto;
+                padding-bottom: 5px;
+            }
+            img {
+                display: block;
+                margin: 10px auto;
+            }
+            ul {
+                margin-left: 25px;
+                li {
+                    a {
+                        color: #000;
+                    }
+                }
+            }
+        }
+    }
+    .wrap_right {
+        float: right;
+        width: 730px;
+        height: 200px;
+        .blogs {
+            width: 700px;
+            padding: 0 10px;
+            font-size: 14px;
+            .blogs_title {
+                font-size: 18px;
+                line-height: 31px;
+                border-bottom: 1px solid #000;
+                overflow: hidden;
+            }
+            .blogs_menu {
+                padding-top: 4px;
+            }
+            .blog {
+                text-indent: 12px;
+                display: block;
+                width: 700px;
+                line-height: 28px;
+                color: #000;
+                a {
+                    color: #000;
+                    font-size: 14px;
+                }
+                .blog_time {
+                    margin-right: 12px;
+                    float: right;
+                }
+            }
+            .blog:hover {
+                background: #eee;
+            }
+            .more_blogs {
+                display: block;
+                line-height: 28px;
+                cursor: pointer;
+            }
+            .search_blog {
+                float: right;
+                margin-right: 12px;
+                .search_box {
+                    border: 1px solid #848484;
+                    height: 22px;
+                    font-size: 14px;
+                    line-height: 22px;
+                    padding: 0 10px;
+                    margin-right: 10px;
+                    border-radius: 11px;
+                }
+                .search_btn {
+                    font-size: 24px;
+                    width: 54px;
+                    height: 24px;
+                    line-height: 24px;
+                    margin-top: 5px;
+                    background: #eee;
+                    color: #000;
+                    float: right;
+                    text-align: center;
+                    border-radius: 11px;
+                    cursor: pointer;
+                }
+                .search_btn:hover {
+                    background: #000;
+                    color: #fff;
+                }
+            }
+        }
+        #blog {
+            width: 700px;
+            padding: 0 10px;
+            p.blog_title {
+                font-size: 18px;
+                line-height: 31px;
+                border-bottom: 1px solid #000;
+                span {
+                    float: right;
+                    font-size: 12px;
+                }
+            }
+            .blog_con {
+                padding-top: 10px;
+                font-size: 14px;
+                line-height: 24px;
+            }
+        }
+    }
+}

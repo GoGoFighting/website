@@ -1,0 +1,67 @@
+@import './comm/comm';
+#bg {
+	width: 100%;
+	height: 100%;
+    background: url('/images/bg.jpg') no-repeat;
+    background-position: center center;
+}
+body{
+    min-width: 540px;
+    min-height: 210px;
+}
+.container {
+    width: 512px;
+    height: 180px;
+    padding: 12px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -96px 0 0 -262px;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    color: #000;
+    a {
+        color: #000;
+    }
+    .title {
+        width: 100%;
+        text-align: center;
+        padding-bottom: 12px;
+        h1 {
+            font-size: 18px;
+            line-height: 42px
+        }
+        h2 {
+            font-size: 14px;
+        }
+    }
+    .menu {
+        width: 452px;
+        padding: 6px 18px;
+        border-radius: 8px;
+        background-color: rgba(0, 0, 0, 0.2);
+        margin: 24px 12px;
+        a {
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    }
+    .menu:hover {
+        background: rgba(0, 0, 0, 0.5);
+        color: #fff;
+        a {
+            color: #fff;
+        }
+    }
+    .contact {
+        width: 500px;
+        text-align: right;
+        margin-top: 32px;
+        a:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+    }
+}
