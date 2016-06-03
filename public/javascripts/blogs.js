@@ -29575,7 +29575,7 @@ var Blog = _react2.default.createClass({
     render: function render() {
         return _react2.default.createElement(
             "a",
-            { href: this.props.item.url, className: "blog" },
+            { href: this.props.item.url, className: "blog", title: this.props.item.title },
             _react2.default.createElement(
                 "span",
                 { className: "blog_title" },
@@ -29634,7 +29634,7 @@ var Blogs = _react2.default.createClass({
         var arr = [];
         _jquery2.default.each(this.state.data, function (i, item) {
             item.url = '/blog?id=' + item.id;
-            item.time = new Date(item.id).pattern("yyyy-MM-dd");
+            item.time = new Date(item.createTime).pattern("yyyy-MM-dd");
             arr.push(_react2.default.createElement(Blog, { key: i++, index: i++, item: item }));
         });
         var moreBlogs = void 0;
@@ -29645,6 +29645,7 @@ var Blogs = _react2.default.createClass({
                 "更多日志..."
             );
         }
+        console.log(moreBlogs);
         return _react2.default.createElement(
             "div",
             null,
@@ -29745,7 +29746,7 @@ var Information = _react2.default.createClass({
 					),
 					_react2.default.createElement(
 						"a",
-						{ href: "" },
+						{ href: "https://github.com/GoGoFighting" },
 						"Github"
 					)
 				)

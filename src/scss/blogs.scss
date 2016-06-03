@@ -71,7 +71,6 @@ body {
     .wrap_right {
         float: right;
         width: 730px;
-        height: 200px;
         .blogs {
             width: 700px;
             padding: 0 10px;
@@ -91,6 +90,7 @@ body {
                 width: 700px;
                 line-height: 28px;
                 color: #000;
+                border-radius: 4px;
                 a {
                     color: #000;
                     font-size: 14px;
@@ -107,6 +107,7 @@ body {
                 display: block;
                 line-height: 28px;
                 cursor: pointer;
+                text-indent: 12px;
             }
             .search_blog {
                 float: right;

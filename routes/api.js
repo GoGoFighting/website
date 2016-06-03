@@ -12,7 +12,7 @@ router.get('/blogs.do', function(req, res) {
         data.title = new RegExp(req.query.key);
     }
     blogs.find(data).count().exec(function(f, length) {
-        blogs.find(data).sort({ id: -1 }).limit(parseInt(req.query.limit)).exec(function(e, docs) {
+        blogs.find(data).sort({ createTime: -1 }).limit(parseInt(req.query.limit)).exec(function(e, docs) {
             if (length > parseInt(req.query.limit)) {
                 res.json({ list: docs, status: true });
             } else {

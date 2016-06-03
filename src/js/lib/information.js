@@ -8,7 +8,7 @@ var Information = React.createClass({
 					<p>Follow me</p>
 					<div className="tips">
 						<a href="http://weibo.com/FightingNine" target="_blank">Sina</a>
-						<a href="">Github</a>
+						<a href="https://github.com/GoGoFighting" target="_blank">Github</a>
 					</div>
 				</div>
 				<div className="about_me">

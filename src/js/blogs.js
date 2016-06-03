@@ -6,7 +6,7 @@ import './lib/date';
 let Blog = React.createClass({
 	render: function(){
 		return (
-			<a href={this.props.item.url} className="blog">
+			<a href={this.props.item.url} className="blog" title={this.props.item.title}>
 				<span className="blog_title">
 					{this.props.item.title}
 				</span>
@@ -58,13 +58,14 @@ let Blogs = React.createClass({
         let arr = [];
         $.each(this.state.data, function(i, item) {
             item.url = '/blog?id=' + item.id;
-            item.time = new Date(item.id).pattern("yyyy-MM-dd");
+            item.time = new Date(item.createTime).pattern("yyyy-MM-dd");
         	arr.push(<Blog key={i++} index={i++} item={item}/>);
         });
         let moreBlogs;
         if(this.state.status){
             moreBlogs = <span className="more_blogs" onClick={this.loadMore}>更多日志...</span>
         }
+        console.log(moreBlogs)
         return (
         	<div>
         		<p className="blogs_title">

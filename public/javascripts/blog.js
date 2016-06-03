@@ -29586,10 +29586,11 @@ var Blogs = _react2.default.createClass({
         var _this = this;
         var id = getUrlParam('id');
         _jquery2.default.getJSON('/api/blog.do', { id: id }, function (data, status) {
-            data[0].date = new Date(data[0].id).pattern("yyyy-MM-dd HH:mm:ss");
+            data[0].date = new Date(data[0].createTime).pattern("yyyy-MM-dd HH:mm:ss");
             _this.setState({
                 data: data[0]
             });
+            document.title = data[0].title + " -- Tong Xu's Personal Website";
             (0, _jquery2.default)('.blog_con').html('<div>' + data[0].con + '</div>');
         });
     },
@@ -29688,7 +29689,7 @@ var Information = _react2.default.createClass({
 					),
 					_react2.default.createElement(
 						"a",
-						{ href: "" },
+						{ href: "https://github.com/GoGoFighting", target: "_blank" },
 						"Github"
 					)
 				)

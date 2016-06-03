@@ -18,10 +18,11 @@ let Blogs = React.createClass({
         let _this = this;
         let id = getUrlParam('id');
         $.getJSON('/api/blog.do', {id: id}, function(data, status) {
-            data[0].date = new Date(data[0].id).pattern("yyyy-MM-dd HH:mm:ss");
+            data[0].date = new Date(data[0].createTime).pattern("yyyy-MM-dd HH:mm:ss");
             _this.setState({
                 data: data[0]
             });
+            document.title = data[0].title + " -- Tong Xu's Personal Website";
             $('.blog_con').html('<div>' + data[0].con + '</div>');
         });
     },

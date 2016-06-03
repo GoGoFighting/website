@@ -1,1 +1,22 @@
 @import './comm/comm';
+@import '//at.alicdn.com/t/font_1464853303_623735.css';
+body {
+    background: #FFFAFA;
+}
+.wrap {
+    width: 780px;
+    margin: 0 auto;
+    overflow: hidden;
+    position: relative;
+    h1 {
+        width: 760px;
+        border-bottom: 1px solid #000;
+        margin: 10px;
+        line-height: 50px;
+        a {
+            color: #000;
+            float: right;
+            font-size: 26px;
+        }
+    }
+}
