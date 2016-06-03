@@ -17,19 +17,19 @@ var globby = require('vinyl-globby');
 var config = {
     img: {
         src: ['./src/img/**/*.jpg', './src/img/**/*.png'],
-        output: './own-website/public/images'
+        output: './public/images'
     },
     js: {
         src: './src/js/*.js',
-        output: './own-website/public/javascripts'
+        output: './public/javascripts'
     },
     css: {
         src: './src/scss/*.scss',
-        output: './own-website/public/stylesheets'
+        output: './public/stylesheets'
     },
     ejs: {
         src: './src/app/*.ejs',
-        output: './own-website/views'
+        output: './views'
     },
     watch: {
         js: './src/js/**/*.js',
