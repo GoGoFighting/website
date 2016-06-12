@@ -15,7 +15,7 @@ var Information = React.createClass({
 					<p>About me</p>
 					<img src="" width="200" height="100" alt="me" />
 					<ul>
-						<li><a href="/about">个人简介</a></li>
+						<li><a href="/about">About</a></li>
 						<li><a href="/blogs">Blogs</a></li>
 					</ul>
 				</div>

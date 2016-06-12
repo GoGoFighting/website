@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-
 /*HOME*/
 router.get('/', function(req, res, next) {
     res.render('index', {});
@@ -16,5 +15,9 @@ router.get('/about', function(req, res, next) {
 /*ABOUT ME*/
 router.get('/blog', function(req, res, next) {
     res.render('blog', {});
+});
+/*BACKSTAGE*/
+router.get('/backstage', function(req, res, next) {
+    res.render('backstage', {});
 });
 module.exports = router;

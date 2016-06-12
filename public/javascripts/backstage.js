@@ -29559,123 +29559,851 @@ var _reactDom = require("react-dom");
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
+var _blogs_list = require("./backstage/blogs_list");
+
+var _blogs_list2 = _interopRequireDefault(_blogs_list);
+
+var _message = require("./backstage/message");
+
+var _message2 = _interopRequireDefault(_message);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Wrap = _react2.default.createClass({
+    displayName: "Wrap",
+
+    messages: function messages() {
+        (0, _message2.default)();
+    },
+    componentDidMount: function componentDidMount() {
+        (0, _blogs_list2.default)();
+    },
+    render: function render() {
+        return _react2.default.createElement(
+            "div",
+            null,
+            _react2.default.createElement(
+                "h1",
+                null,
+                "Backstage",
+                _react2.default.createElement("a", { href: "/", className: "icon iconfont icon-home", title: "Back Home", target: "_blank" })
+            ),
+            _react2.default.createElement(
+                "div",
+                { className: "wrap_left" },
+                _react2.default.createElement(
+                    "div",
+                    { className: "menu" },
+                    _react2.default.createElement(
+                        "ul",
+                        null,
+                        _react2.default.createElement(
+                            "li",
+                            { onClick: _blogs_list2.default },
+                            "日志管理"
+                        ),
+                        _react2.default.createElement(
+                            "li",
+                            { onClick: _message2.default },
+                            "留言管理"
+                        )
+                    )
+                )
+            ),
+            _react2.default.createElement(
+                "div",
+                { className: "wrap_right" },
+                _react2.default.createElement("div", { id: "content" })
+            )
+        );
+    }
+});
+_reactDom2.default.render(_react2.default.createElement(Wrap, null), document.getElementById('wrap'));
+
+},{"./backstage/blogs_list":172,"./backstage/message":174,"react":168,"react-dom":3}],170:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _react = require("react");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = require("react-dom");
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _message = require("./message");
+
+var _message2 = _interopRequireDefault(_message);
+
 var _jquery = require("jquery");
 
 var _jquery2 = _interopRequireDefault(_jquery);
 
-require("./lib/information");
+require("../lib/date");
 
-require("./lib/date");
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var blogId = void 0;
+var Message = _react2.default.createClass({
+	displayName: "Message",
+
+	getInitialState: function getInitialState() {
+		return {
+			status: '',
+			btn: ''
+		};
+	},
+	componentDidMount: function componentDidMount() {
+		if (this.props.item.deleteTime === 0) {
+			this.setState({
+				status: "未删除",
+				btn: _react2.default.createElement("span", { className: "icon iconfont icon-delete", onClick: this.delete })
+			});
+		} else {
+			this.setState({
+				status: "已删除",
+				btn: _react2.default.createElement("span", { className: "icon iconfont icon-huifu", onClick: this.huifu })
+			});
+		}
+	},
+	delete: function _delete() {
+		var _this = this;
+		_jquery2.default.getJSON('/message/set', { isDelete: true, id: this.props.item.id, blogId: blogId, userName: this.props.item.userName }, function (data, status) {
+			if (data && data.status) {
+				_this.setState({
+					status: "已删除",
+					btn: _react2.default.createElement("span", { className: "icon iconfont icon-huifu", onClick: _this.huifu })
+				});
+			}
+		});
+	},
+	huifu: function huifu() {
+		var _this = this;
+		_jquery2.default.getJSON('/message/set', { isDelete: false, id: this.props.item.id, blogId: blogId, userName: this.props.item.userName }, function (data, status) {
+			if (data && data.status) {
+				_this.setState({
+					status: "未删除",
+					btn: _react2.default.createElement("span", { className: "icon iconfont icon-delete", onClick: _this.delete })
+				});
+			}
+		});
+	},
+	render: function render() {
+		return _react2.default.createElement(
+			"tr",
+			{ width: "100%" },
+			_react2.default.createElement(
+				"td",
+				{ width: "20%" },
+				this.props.item.userName
+			),
+			_react2.default.createElement(
+				"td",
+				{ width: "30%" },
+				this.props.item.userEmail
+			),
+			_react2.default.createElement(
+				"td",
+				{ width: "30%" },
+				this.props.item.time
+			),
+			_react2.default.createElement(
+				"td",
+				{ width: "10%" },
+				this.state.status
+			),
+			_react2.default.createElement(
+				"td",
+				{ width: "10%" },
+				this.state.btn
+			)
+		);
+	}
+});
+var Messages = _react2.default.createClass({
+	displayName: "Messages",
+
+	getInitialState: function getInitialState() {
+		return {
+			data: [],
+			title: ''
+		};
+	},
+	componentDidMount: function componentDidMount() {
+		var _this = this;
+		_jquery2.default.getJSON('/message/getBlogMessage', { blogId: blogId }, function (data, status) {
+			_jquery2.default.getJSON('/blog/getOne', { id: blogId }, function (blog, s) {
+				_this.setState({
+					data: data.list,
+					title: blog[0].title
+				});
+			});
+		});
+	},
+	render: function render() {
+		var arr = [];
+		var _this = this;
+		_jquery2.default.each(this.state.data, function (i, item) {
+			item.time = new Date(item.createTime).pattern("yyyy-MM-dd HH:mm:ss");
+			var key = blogId + new Date().getTime() + i;
+			arr.push(_react2.default.createElement(Message, { key: key, item: item }));
+		});
+		return _react2.default.createElement(
+			"div",
+			null,
+			_react2.default.createElement(
+				"p",
+				{ className: "title" },
+				this.state.title,
+				_react2.default.createElement("span", { className: "icon iconfont icon-fanhui", onClick: _message2.default, title: "返回列表" })
+			),
+			_react2.default.createElement(
+				"table",
+				null,
+				_react2.default.createElement(
+					"thead",
+					null,
+					_react2.default.createElement(
+						"tr",
+						{ width: "100%" },
+						_react2.default.createElement(
+							"td",
+							{ width: "30%" },
+							"用户名"
+						),
+						_react2.default.createElement(
+							"td",
+							{ width: "30%" },
+							"邮箱"
+						),
+						_react2.default.createElement(
+							"td",
+							{ width: "30%" },
+							"日期"
+						),
+						_react2.default.createElement(
+							"td",
+							{ width: "10%" },
+							"状态"
+						),
+						_react2.default.createElement(
+							"td",
+							{ width: "10%" },
+							"操作"
+						)
+					)
+				),
+				_react2.default.createElement(
+					"tbody",
+					null,
+					arr
+				)
+			)
+		);
+	}
+});
+function render(id) {
+	blogId = id;
+	_reactDom2.default.render(_react2.default.createElement(Messages, null), document.getElementById('content'));
+}
+exports.default = render;
+
+},{"../lib/date":175,"./message":174,"jquery":2,"react":168,"react-dom":3}],171:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = require("react");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = require("react-dom");
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _blogs_list = require("./blogs_list");
+
+var _blogs_list2 = _interopRequireDefault(_blogs_list);
+
+var _jquery = require("jquery");
+
+var _jquery2 = _interopRequireDefault(_jquery);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Blog = _react2.default.createClass({
     displayName: "Blog",
 
-    render: function render() {
-        return _react2.default.createElement(
-            "a",
-            { href: this.props.item.url, className: "blog", title: this.props.item.title },
-            _react2.default.createElement(
-                "span",
-                { className: "blog_title" },
-                this.props.item.title
-            ),
-            _react2.default.createElement(
-                "span",
-                { className: "blog_time" },
-                this.props.item.time
-            )
-        );
-    }
-});
-var Blogs = _react2.default.createClass({
-    displayName: "Blogs",
-
-    limit: 15,
-    key: '',
-    getInitialState: function getInitialState() {
-        return {
-            data: [],
-            status: false
-        };
+    showContent: function showContent() {
+        var content = (0, _jquery2.default)(this.refs.content).val();
+        (0, _jquery2.default)(this.refs.result).show();
+        (0, _jquery2.default)(this.refs.resultContent).html('<div class="blog_con">' + content + '</div>');
     },
-    componentDidMount: function componentDidMount() {
-        var _this = this;
-        _jquery2.default.getJSON('/blog/get', { limit: this.limit }, function (data, status) {
-            _this.setState({
-                data: data.list,
-                status: data.status
-            });
-        });
-    },
-    searchBlogs: function searchBlogs() {
-        var _this = this;
-        this.key = this.refs.key.value;
-        this.limit = 15;
-        if (this.key === '') {
+    submit: function submit() {
+        var con = this.refs.content.value;
+        var title = this.refs.title.value;
+        if (con === '' || title === '') {
             return;
-        }
-        _jquery2.default.getJSON('/blog/get', { limit: this.limit, key: this.key }, function (data, status) {
-            _this.setState({
-                data: data.list,
-                status: data.status
-            });
-        });
-    },
-    loadMore: function loadMore() {
-        var _this = this;
-        this.limit += 15;
-        _jquery2.default.getJSON('/blog/get', { limit: this.limit, key: this.key }, function (data, status) {
-            _this.setState({
-                data: data.list,
-                status: data.status
-            });
+        };
+        _jquery2.default.getJSON('/blog/add', { con: con, title: title }, function (data, status) {
+            if (data && data.status) {
+                (0, _blogs_list2.default)();
+            }
         });
     },
     render: function render() {
-        var arr = [];
-        var _this = this;
-        _jquery2.default.each(this.state.data, function (i, item) {
-            item.url = '/blog?id=' + item.id;
-            item.time = new Date(item.createTime).pattern("yyyy-MM-dd");
-            var key = _this.key + new Date().getTime + i;
-            arr.push(_react2.default.createElement(Blog, { key: key, item: item }));
-        });
-        var moreBlogs = void 0;
-        if (this.state.status) {
-            moreBlogs = _react2.default.createElement(
-                "span",
-                { className: "more_blogs", onClick: this.loadMore },
-                "更多日志..."
-            );
-        }
         return _react2.default.createElement(
             "div",
             null,
             _react2.default.createElement(
                 "p",
-                { className: "blogs_title" },
-                "Catalog",
-                _react2.default.createElement(
-                    "span",
-                    { className: "search_blog" },
-                    _react2.default.createElement("input", { type: "text", className: "search_box", ref: "key", placeholder: "关键词" }),
-                    _react2.default.createElement("span", { className: "icon iconfont icon-chaxun search_btn", onClick: this.searchBlogs })
-                )
+                { className: "title" },
+                "New",
+                _react2.default.createElement("span", { className: "icon iconfont icon-fanhui", onClick: _blogs_list2.default, title: "返回列表" })
             ),
             _react2.default.createElement(
                 "div",
-                { className: "blogs_menu" },
-                arr
+                { className: "form" },
+                _react2.default.createElement(
+                    "p",
+                    { className: "blog_title" },
+                    "标题:",
+                    _react2.default.createElement("input", { type: "text", ref: "title", className: "blogTitle" })
+                ),
+                _react2.default.createElement(
+                    "p",
+                    { className: "blog_content" },
+                    "内容: ",
+                    _react2.default.createElement("span", { className: "icon iconfont icon-gongyongzhixing", onClick: this.showContent, title: "运行" })
+                ),
+                _react2.default.createElement("textarea", { className: "blogContent", ref: "content" }),
+                _react2.default.createElement(
+                    "span",
+                    { className: "submit", onClick: this.submit },
+                    "提交"
+                )
             ),
-            moreBlogs
+            _react2.default.createElement(
+                "p",
+                { className: "title content_result", ref: "result" },
+                "Result"
+            ),
+            _react2.default.createElement("div", { className: "show_content", ref: "resultContent" })
         );
     }
 });
-_reactDom2.default.render(_react2.default.createElement(Blogs, null), document.getElementById('blogs'));
+function render() {
+    _reactDom2.default.render(_react2.default.createElement(Blog, null), document.getElementById('content'));
+}
+exports.default = render;
 
-},{"./lib/date":170,"./lib/information":171,"jquery":2,"react":168,"react-dom":3}],170:[function(require,module,exports){
+},{"./blogs_list":172,"jquery":2,"react":168,"react-dom":3}],172:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _react = require("react");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = require("react-dom");
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _blogs_add = require("./blogs_add");
+
+var _blogs_add2 = _interopRequireDefault(_blogs_add);
+
+var _blogs_set = require("./blogs_set");
+
+var _blogs_set2 = _interopRequireDefault(_blogs_set);
+
+var _jquery = require("jquery");
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
+require("../lib/date");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Blog = _react2.default.createClass({
+	displayName: "Blog",
+
+	getInitialState: function getInitialState() {
+		return {
+			status: '',
+			btn: ''
+		};
+	},
+	componentDidMount: function componentDidMount() {
+		if (this.props.item.deleteTime === 0) {
+			this.setState({
+				status: "未删除",
+				btn: _react2.default.createElement("span", { className: "icon iconfont icon-delete", onClick: this.deleteBlog })
+			});
+		} else {
+			this.setState({
+				status: "已删除",
+				btn: _react2.default.createElement("span", { className: "icon iconfont icon-huifu", onClick: this.huifuBlog })
+			});
+		}
+	},
+	setBlog: function setBlog(e) {
+		(0, _blogs_set2.default)(this.props.item.id);
+	},
+	deleteBlog: function deleteBlog() {
+		var _this = this;
+		_jquery2.default.getJSON('/blog/set', { id: this.props.item.id, isDelete: true }, function (data, status) {
+			if (data && data.status) {
+				_this.setState({
+					status: "已删除",
+					btn: _react2.default.createElement("span", { className: "icon iconfont icon-huifu", onClick: _this.huifuBlog })
+				});
+			}
+		});
+	},
+	huifuBlog: function huifuBlog() {
+		var _this = this;
+		_jquery2.default.getJSON('/blog/set', { id: this.props.item.id, isDelete: false }, function (data, status) {
+			if (data && data.status) {
+				_this.setState({
+					status: "未删除",
+					btn: _react2.default.createElement("span", { className: "icon iconfont icon-delete", onClick: _this.deleteBlog })
+				});
+			}
+		});
+	},
+	render: function render() {
+		return _react2.default.createElement(
+			"tr",
+			{ width: "100%" },
+			_react2.default.createElement(
+				"td",
+				{ width: "40%" },
+				this.props.item.title
+			),
+			_react2.default.createElement(
+				"td",
+				{ width: "25%" },
+				this.props.item.time
+			),
+			_react2.default.createElement(
+				"td",
+				{ width: "10%" },
+				this.state.status
+			),
+			_react2.default.createElement(
+				"td",
+				{ width: "25%" },
+				_react2.default.createElement("span", { className: "icon iconfont icon-shezhi", onClick: this.setBlog }),
+				this.state.btn
+			)
+		);
+	}
+});
+var Blogs = _react2.default.createClass({
+	displayName: "Blogs",
+
+	key: '',
+	getInitialState: function getInitialState() {
+		return {
+			data: []
+		};
+	},
+	componentDidMount: function componentDidMount() {
+		var _this = this;
+		_jquery2.default.getJSON('/blog/getAll', function (data, status) {
+			_this.setState({
+				data: data.list
+			});
+		});
+	},
+	searchBlogs: function searchBlogs() {
+		var _this = this;
+		this.key = this.refs.key.value;
+		if (this.key === '') {
+			return;
+		}
+		_jquery2.default.getJSON('/blog/getAll', { key: this.key }, function (data, status) {
+			_this.setState({
+				data: data.list
+			});
+		});
+	},
+	render: function render() {
+		var arr = [];
+		var _this = this;
+		_jquery2.default.each(this.state.data, function (i, item) {
+			item.time = new Date(item.createTime).pattern("yyyy-MM-dd HH:mm:ss");
+			var key = _this.key + new Date().getTime() + i;
+			arr.push(_react2.default.createElement(Blog, { key: key, item: item }));
+		});
+		return _react2.default.createElement(
+			"div",
+			null,
+			_react2.default.createElement(
+				"p",
+				{ className: "title" },
+				"Catalog",
+				_react2.default.createElement(
+					"span",
+					{ className: "search_blog" },
+					_react2.default.createElement("input", { type: "text", className: "search_box", ref: "key", placeholder: "关键词" }),
+					_react2.default.createElement("span", { className: "icon iconfont icon-chaxun search_btn", onClick: this.searchBlogs })
+				)
+			),
+			_react2.default.createElement(
+				"table",
+				null,
+				_react2.default.createElement(
+					"thead",
+					null,
+					_react2.default.createElement(
+						"tr",
+						{ width: "100%" },
+						_react2.default.createElement(
+							"td",
+							{ width: "40%" },
+							"标题"
+						),
+						_react2.default.createElement(
+							"td",
+							{ width: "25%" },
+							"日期"
+						),
+						_react2.default.createElement(
+							"td",
+							{ width: "10%" },
+							"状态"
+						),
+						_react2.default.createElement(
+							"td",
+							{ width: "25%" },
+							"操作",
+							_react2.default.createElement("span", { className: "icon iconfont icon-tianjia", title: "新增日志", onClick: _blogs_add2.default })
+						)
+					)
+				),
+				_react2.default.createElement(
+					"tbody",
+					null,
+					arr
+				)
+			)
+		);
+	}
+});
+function render() {
+	_reactDom2.default.render(_react2.default.createElement(Blogs, null), document.getElementById('content'));
+}
+exports.default = render;
+
+},{"../lib/date":175,"./blogs_add":171,"./blogs_set":173,"jquery":2,"react":168,"react-dom":3}],173:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = require("react");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = require("react-dom");
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _blogs_list = require("./blogs_list");
+
+var _blogs_list2 = _interopRequireDefault(_blogs_list);
+
+var _jquery = require("jquery");
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var blog_id = void 0;
+var Blog = _react2.default.createClass({
+    displayName: "Blog",
+
+    getInitialState: function getInitialState() {
+        return {
+            title: '',
+            con: ''
+        };
+    },
+    componentDidMount: function componentDidMount() {
+        var _this = this;
+        _jquery2.default.getJSON('/blog/getOne', { id: blog_id }, function (data, status) {
+            data[0].date = new Date(data[0].createTime).pattern("yyyy-MM-dd HH:mm:ss");
+            _this.setState({
+                title: data[0].title,
+                con: data[0].con
+            });
+        });
+    },
+    showContent: function showContent() {
+        var content = (0, _jquery2.default)(this.refs.content).val();
+        (0, _jquery2.default)(this.refs.result).show();
+        (0, _jquery2.default)(this.refs.resultContent).html('<div class="blog_con">' + content + '</div>');
+    },
+    submit: function submit() {
+        var con = this.refs.content.value;
+        var title = this.refs.title.value;
+        if (con === '' || title === '') {
+            return;
+        };
+        _jquery2.default.getJSON('/blog/set', { con: con, title: title, id: blog_id }, function (data, status) {
+            if (data && data.status) {
+                (0, _blogs_list2.default)();
+            }
+        });
+    },
+    blogTitle: function blogTitle(e) {
+        this.setState({ title: e.target.value });
+    },
+    blogCon: function blogCon(e) {
+        this.setState({ con: e.target.value });
+    },
+    render: function render() {
+        return _react2.default.createElement(
+            "div",
+            null,
+            _react2.default.createElement(
+                "p",
+                { className: "title" },
+                "Set",
+                _react2.default.createElement("span", { className: "icon iconfont icon-fanhui", onClick: _blogs_list2.default, title: "返回列表" })
+            ),
+            _react2.default.createElement(
+                "div",
+                { className: "form" },
+                _react2.default.createElement(
+                    "p",
+                    { className: "blog_title" },
+                    "标题:",
+                    _react2.default.createElement("input", { type: "text", ref: "title", className: "blogTitle", value: this.state.title, onChange: this.blogTitle })
+                ),
+                _react2.default.createElement(
+                    "p",
+                    { className: "blog_content" },
+                    "内容: ",
+                    _react2.default.createElement("span", { className: "icon iconfont icon-gongyongzhixing", onClick: this.showContent, title: "运行" })
+                ),
+                _react2.default.createElement("textarea", { className: "blogContent", value: this.state.con, ref: "content", onChange: this.blogCon }),
+                _react2.default.createElement(
+                    "span",
+                    { className: "submit", onClick: this.submit },
+                    "提交"
+                )
+            ),
+            _react2.default.createElement(
+                "p",
+                { className: "title content_result", ref: "result" },
+                "Result"
+            ),
+            _react2.default.createElement("div", { className: "show_content", ref: "resultContent" })
+        );
+    }
+});
+function render(id) {
+    blog_id = id;
+    _reactDom2.default.render(_react2.default.createElement(Blog, null), document.getElementById('content'));
+}
+exports.default = render;
+
+},{"./blogs_list":172,"jquery":2,"react":168,"react-dom":3}],174:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = require("react");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = require("react-dom");
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _jquery = require("jquery");
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
+require("../lib/date");
+
+var _blog_message = require("./blog_message");
+
+var _blog_message2 = _interopRequireDefault(_blog_message);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Blog = _react2.default.createClass({
+  displayName: "Blog",
+
+  getInitialState: function getInitialState() {
+    return {
+      status: ''
+    };
+  },
+  componentDidMount: function componentDidMount() {
+    if (this.props.item.deleteTime === 0) {
+      this.setState({
+        status: "未删除"
+      });
+    } else {
+      this.setState({
+        status: "已删除"
+      });
+    }
+  },
+  messages: function messages() {
+    (0, _blog_message2.default)(this.props.item.id);
+  },
+  render: function render() {
+    return _react2.default.createElement(
+      "tr",
+      { width: "100%" },
+      _react2.default.createElement(
+        "td",
+        { width: "40%" },
+        this.props.item.title
+      ),
+      _react2.default.createElement(
+        "td",
+        { width: "25%" },
+        this.props.item.time
+      ),
+      _react2.default.createElement(
+        "td",
+        { width: "10%" },
+        this.props.item.messages
+      ),
+      _react2.default.createElement(
+        "td",
+        { width: "10%" },
+        this.state.status
+      ),
+      _react2.default.createElement(
+        "td",
+        { width: "15%" },
+        _react2.default.createElement("span", { className: "icon iconfont icon-liuyan", onClick: this.messages })
+      )
+    );
+  }
+});
+var Blogs = _react2.default.createClass({
+  displayName: "Blogs",
+
+  key: '',
+  getInitialState: function getInitialState() {
+    return {
+      data: []
+    };
+  },
+  componentDidMount: function componentDidMount() {
+    var _this = this;
+    _jquery2.default.getJSON('/blog/getAll', function (data, status) {
+      _this.setState({
+        data: data.list
+      });
+    });
+  },
+  searchBlogs: function searchBlogs() {
+    var _this = this;
+    this.key = this.refs.key.value;
+    if (this.key === '') {
+      return;
+    }
+    _jquery2.default.getJSON('/blog/getAll', { key: this.key }, function (data, status) {
+      _this.setState({
+        data: data.list
+      });
+    });
+  },
+  render: function render() {
+    var arr = [];
+    var _this = this;
+    _jquery2.default.each(this.state.data, function (i, item) {
+      item.time = new Date(item.createTime).pattern("yyyy-MM-dd HH:mm:ss");
+      var key = item.id + new Date().getTime() + i;
+      arr.push(_react2.default.createElement(Blog, { key: key, item: item }));
+    });
+    return _react2.default.createElement(
+      "div",
+      null,
+      _react2.default.createElement(
+        "p",
+        { className: "title" },
+        "Catalog",
+        _react2.default.createElement(
+          "span",
+          { className: "search_blog" },
+          _react2.default.createElement("input", { type: "text", className: "search_box", ref: "key", placeholder: "关键词" }),
+          _react2.default.createElement("span", { className: "icon iconfont icon-chaxun search_btn", onClick: this.searchBlogs })
+        )
+      ),
+      _react2.default.createElement(
+        "table",
+        null,
+        _react2.default.createElement(
+          "thead",
+          null,
+          _react2.default.createElement(
+            "tr",
+            { width: "100%" },
+            _react2.default.createElement(
+              "td",
+              { width: "40%" },
+              "标题"
+            ),
+            _react2.default.createElement(
+              "td",
+              { width: "25%" },
+              "日期"
+            ),
+            _react2.default.createElement(
+              "td",
+              { width: "10%" },
+              "留言数"
+            ),
+            _react2.default.createElement(
+              "td",
+              { width: "10%" },
+              "状态"
+            ),
+            _react2.default.createElement(
+              "td",
+              { width: "15%" },
+              "操作"
+            )
+          )
+        ),
+        _react2.default.createElement(
+          "tbody",
+          null,
+          arr
+        )
+      )
+    );
+  }
+});
+function render() {
+  _reactDom2.default.render(_react2.default.createElement(Blogs, null), document.getElementById('content'));
+}
+exports.default = render;
+
+},{"../lib/date":175,"./blog_message":170,"jquery":2,"react":168,"react-dom":3}],175:[function(require,module,exports){
 "use strict";
 
 Date.prototype.pattern = function (fmt) {
@@ -29712,87 +30440,7 @@ Date.prototype.pattern = function (fmt) {
     return fmt;
 };
 
-},{}],171:[function(require,module,exports){
-"use strict";
-
-var _react = require("react");
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactDom = require("react-dom");
-
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var Information = _react2.default.createClass({
-	displayName: "Information",
-
-	render: function render() {
-		return _react2.default.createElement(
-			"div",
-			null,
-			_react2.default.createElement(
-				"div",
-				{ className: "follow_me" },
-				_react2.default.createElement(
-					"p",
-					null,
-					"Follow me"
-				),
-				_react2.default.createElement(
-					"div",
-					{ className: "tips" },
-					_react2.default.createElement(
-						"a",
-						{ href: "http://weibo.com/FightingNine", target: "_blank" },
-						"Sina"
-					),
-					_react2.default.createElement(
-						"a",
-						{ href: "https://github.com/GoGoFighting", target: "_blank" },
-						"Github"
-					)
-				)
-			),
-			_react2.default.createElement(
-				"div",
-				{ className: "about_me" },
-				_react2.default.createElement(
-					"p",
-					null,
-					"About me"
-				),
-				_react2.default.createElement("img", { src: "", width: "200", height: "100", alt: "me" }),
-				_react2.default.createElement(
-					"ul",
-					null,
-					_react2.default.createElement(
-						"li",
-						null,
-						_react2.default.createElement(
-							"a",
-							{ href: "/about" },
-							"About"
-						)
-					),
-					_react2.default.createElement(
-						"li",
-						null,
-						_react2.default.createElement(
-							"a",
-							{ href: "/blogs" },
-							"Blogs"
-						)
-					)
-				)
-			)
-		);
-	}
-});
-_reactDom2.default.render(_react2.default.createElement(Information, null), document.getElementById('information'));
-
-},{"react":168,"react-dom":3}]},{},[169])
+},{}]},{},[169])
 
 
-//# sourceMappingURL=blogs.js.map
+//# sourceMappingURL=backstage.js.map

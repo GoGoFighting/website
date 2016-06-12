@@ -1,5 +1,4 @@
 @import './comm/comm';
-@import '//at.alicdn.com/t/font_1464853303_623735.css';
 body {
     background: #FFFAFA;
 }
@@ -9,6 +8,7 @@ body {
     margin: 0 auto;
     overflow: hidden;
     position: relative;
+    margin-bottom: 50px;
     h1 {
         width: 980px;
         border-bottom: 1px solid #000;
@@ -156,6 +156,115 @@ body {
                 padding-top: 10px;
                 font-size: 14px;
                 line-height: 24px;
+            }
+            .message,
+            .message_form {
+                width: 100%;
+                h3 {
+                    font-size: 18px;
+                    line-height: 31px;
+                    border-bottom: 1px solid #000;
+                    font-weight: normal;
+                }
+            }
+            .message_form{
+                .message_con,.user_name,.user_email,.remember{
+                    p{
+                        font-size: 14px;
+                        line-height: 24px;
+                    }
+                }
+                .message_con{
+                    textarea{
+                        width: 690px;
+                        padding: 4px;
+                        height: 120px;
+                        border: 1px solid #000;
+                        font-size: 14px;
+                        line-height: 24px;
+                    }
+                     span{
+                        margin-left: 12px;
+                        color: red;
+                    }
+                }
+                .user_name,.user_email{
+                    input{
+                        width: 250px;
+                        height: 24px;
+                        line-height: 24px;
+                        font-size: 14px;
+                        text-indent: 12px;
+                        border: 1px solid #000;
+                    }
+                    span{
+                        margin-left: 12px;
+                        color: red;
+                    }
+                }
+                .remember{
+                    input{
+                        position: relative;
+                        top: -2px; 
+                        left: 6px;    
+                   }
+                }
+                .submit{
+                    display: block;
+                    font-size: 14px;
+                    width: 60px;
+                    height: 24px;
+                    line-height: 24px;
+                    text-align: center;
+                    background: #eee; 
+                    margin-top: 6px;
+                    border-radius: 6px; 
+                    cursor: pointer;
+                }
+                .submit:hover{
+                    background: #000;
+                    color: #fff;
+                }
+            }
+            .message{
+                margin-bottom: 10px;
+                .message_list{
+                    .moreMessages{
+                        font-size: 18px;
+                        line-height: 36px;
+                        text-align: center;
+                        display: block;
+                        cursor: pointer;
+                    }
+                    .noMessages{
+                        font-size: 16px;
+                        line-height: 64px;
+                        text-align: center;
+                        display: block;
+                        cursor: pointer;
+                    }
+                    .oneMessage{
+                        width: 100%;
+                        border-bottom: 1px dashed #000;
+                        font-size: 14px;
+                        padding-top: 10px;
+                        .mUser{
+                            line-height: 24px;
+                            span{
+                                margin-left: 2px;
+                            }
+                        }
+                        .mContent{
+                            padding: 12px;
+                            width: 100%;
+                            line-height: 18px;
+                        }
+                        .mTime{
+                            margin-top: 10px;
+                            text-align: right;
+                        }
+                    }
+                }
             }
         }
     }
