@@ -29726,7 +29726,7 @@ var Messages = _react2.default.createClass({
     render: function render() {
         var arr = [];
         _jquery2.default.each(this.state.data, function (i, item) {
-            item.createTime = new Date(item.createTime).pattern("yyyy-MM-dd HH:mm");
+            item.createTime = new Date(item.createTime).pattern("yyyy-MM-dd HH:mm:ss");
             var key = item.userName + new Date().getTime() + i;
             arr.push(_react2.default.createElement(Message, { key: key, item: item }));
         });

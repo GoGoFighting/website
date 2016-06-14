@@ -1,9 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var blogs = require('./mongoose').blogs; 
-/*
- * BLOGS
- */
+var blogs = require('./mongoose').blogs;
 router.get('/get', function(req, res) {
     var data = {};
     if (req.query.key) {

@@ -146,7 +146,7 @@ let Messages = React.createClass({
     render: function(){
         let arr = [];
         $.each(this.state.data, function(i, item){
-            item.createTime = new Date(item.createTime).pattern("yyyy-MM-dd HH:mm");
+            item.createTime = new Date(item.createTime).pattern("yyyy-MM-dd HH:mm:ss");
             let key = item.userName + new Date().getTime() + i;
             arr.push(<Message key={key} item={item}/>);
         });

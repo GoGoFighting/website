@@ -1,5 +1,9 @@
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/website');
+
+/*
+ * MESSAGES
+ */
 var messageSchema = new mongoose.Schema({
 	id: {
 		type: Number,
@@ -32,7 +36,9 @@ var messageSchema = new mongoose.Schema({
 }, { safe: true });
 var messages = mongoose.model('message', messageSchema);
 
-
+/*
+ * BLOGS
+ */
 var blogSchema = new mongoose.Schema({
     id: {
         type: Number,
